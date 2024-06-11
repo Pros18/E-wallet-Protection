@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Akun Keuangan</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <button id="sidebar-toggle" aria-label="Toggle Sidebar" onclick="toggleSidebar()">☰</button>
+        </div>
+        <div class="header-center">
+            <h1>Money Armor</h1>
+        </div>
+        <div class="header-right">
+            <a href="#"><img src="logo.png" alt="Company Logo" class="logo"></a>
+        </div>
+    </header>
+    <aside id="sidebar" role="navigation">
+        <nav>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Bank</a></li>
+                <li><a href="#">Alokasi dana</a></li>
+                <li><a href="#">E-statement</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+            <div class="user-profile">
+                <img src="user.jpg" alt="User Photo" class="user-photo">
+                <p class="user-name">Nama Pengguna</p>
+                <p class="user-email">email@example.com</p>
+            </div>
+        </nav>
+    </aside>
+    <main>
+        <!-- Tukarkan Kartu Hadiah -->
+        <section id="redeem-gift-card" class="setting-section">
+            <h1>Tukarkan kartu hadiah menggunakan kode yang ada</h1>
+            <h2>Penukaran memerlukan kartu hadiah dengan kotak di sekitar kode seperti contoh tampilkan semacam surat</h2>
+            <div class="gift-card-example">
+                <p>E-wallet</p>
+                <p>Contoh kode: EEE1560870489367</p>
+            </div>
+            <button class="btn btn-red" onclick="showRedeemCodeInput()">Masukkan kode Anda</button>
+            <div id="redeem-code-input" class="input-container" style="display: none;">
+                <input type="text" id="gift-card-code" class="code-input" placeholder="Masukkan kode Anda di sini" pattern="[a-zA-Z0-9-]+" required>
+                <button class="btn btn-red" onclick="redeemGiftCard()">Tukarkan</button>
+            </div>
+            <p id="redeem-result" class="redeem-result"></p>
+        </section>
+        
+        <!-- Tambahkan Dana -->
+        <section id="add-funds" class="setting-section">
+            <h1>Dapatkan fleksibilitas dan Kejayaan di masa depan</h1>
+            <h2>Pilih jumlah dana ke akun Anda dan gunakan dana untuk melakukan pembelian serta berlangganan</h2>
+            <button class="btn" onclick="selectAmount(100000)">Rp 100 RB</button>
+            <button class="btn" onclick="selectAmount(300000)">Rp 300 RB</button>
+            <button class="btn" onclick="selectAmount(500000)">Rp 500 RB</button>
+            <button class="btn" onclick="showCustomAmountInput()">Lainnya</button>
+            <div id="custom-amount-input" style="display: none;">
+                <label for="custom-amount">Jumlah:</label>
+                <input type="number" id="custom-amount" placeholder="Rp 0,00">
+            </div>
+            <button class="btn btn-blue" onclick="addFunds()">Tambahkan Dana</button>
+            <p id="fund-result" class="fund-result"></p>
+        </section>
+        
+        <!-- Kelola Langganan -->
+        <section id="manage-subscription" class="setting-section">
+            <h1>Edit Langganan</h1>
+            <img src="money-armor-logo.png" alt="Money Armor Logo" class="subscription-logo">
+            <p>Status akun langganan: <span id="subscription-status">Free</span></p>
+            <button class="btn btn-blue" onclick="showSubscriptionOptions()">Lihat Semua Paket</button>
+            <div id="subscription-options" style="display: none;">
+                <button class="btn" onclick="selectSubscription('Free')">Free</button>
+                <button class="btn" onclick="selectSubscription('Umum')">Umum</button>
+                <button class="btn" onclick="selectSubscription('Profesional')">Profesional</button>
+            </div>
+            <button class="btn btn-red" onclick="cancelSubscription()">Batalkan Langganan</button>
+            <p id="cancel-result" class="cancel-result"></p>
+        </section>
+    </main>
+    <script src="scripts.js"></script>
+</body>
+</html>
