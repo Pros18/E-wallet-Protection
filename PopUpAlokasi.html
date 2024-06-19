@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop Up Pengalokasian</title>
+
+    <!--=============== REMIXICONS ===============-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css" crossorigin="">
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <script defer src="script.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            width: 100%;
+            background-color: #0077cc;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .tanggal-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        label {
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .konten {
+            font-weight: 300;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        input[type="date"],
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .rupiah-input-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .rupiah-input-wrapper span {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+
+        .rupiah-input-wrapper input {
+            border-radius: 0 4px 4px 0;
+            flex: 1;
+        }
+
+        button {
+            background-color: #0077cc;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005fa3;
+        }
+
+        .total {
+            margin-top: 1.5rem;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .total div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .circle-chart {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 10px solid #0077cc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: #0077cc;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Money Armor</h1>
+    </header>
+
+    <div class="container">
+        <form onsubmit="event.preventDefault(); addExpenses();">
+            <select id="category">
+                <option value="pemasukan">Pemasukan</option>
+                <option value="hobby">Pengeluaran</option>
+            </select>
+
+            <div class="tanggal-group">
+                <label for="tanggal" style="margin-bottom: 0.5rem;">Tanggal</label>
+                <input type="date" id="tanggal" name="tanggal" class="form-control">
+            </div>
+
+            <label for="description">Deskripsi</label>
+            <input type="text" id="description" placeholder="Deskripsi pengeluaran">
+
+            <label for="category_description">Kategori</label>
+            <input type="text" id="category_description" placeholder="Masukkan Kategori">
+
+            <label for="nominal">Nominal</label>
+            <div class="rupiah-input-wrapper">
+                <input type="text" id="nominal" placeholder="Masukkan jumlah tanpa titik">
+            </div>
+
+            <button type="submit">Simpan</button>
+        </form>
+
+        <div id="expenseList"></div>
+
+        <script>
+            function addExpenses() {
+                const category = document.getElementById('category').value;
+                const description = document.getElementById('description').value;
+                const category_description = document.getElementById('category_description').value;
+                let nominal = document.getElementById('nominal').value;
+                
+                // Format amount to Rupiah
+                nominal = formatRupiah(nominal, 'Rp');
+                
+                const expenseList = document.getElementById('expenseList');
+    
+                if (description && nominal) {
+                    const expenseItem = document.createElement('div');
+                    expenseItem.textContent = `${description} - ${nominal}`;
+                    expenseList.appendChild(expenseItem);
+                }
+            }
+    
+            function formatRupiah(angka, prefix) {
+                let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+    
+                if (ribuan) {
+                    let separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+    
+                rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix === undefined ? rupiah : (rupiah ? prefix + ' ' + rupiah : '');
+            }
+    
+            // Add event listener to format the amount input on change
+            document.getElementById('nominal').addEventListener('input', function (e) {
+                e.target.value = formatRupiah(this.value, 'Rp');
+            });
+    
+        </script>
+</body>
+</html>
